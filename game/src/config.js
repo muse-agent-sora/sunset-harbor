@@ -1,105 +1,92 @@
-// Sunset Harbor — shared constants for the open-world crime game.
-// Everything here is tuning data: world size, road layout, car specs,
-// wanted rules, and the save key. No game logic lives in this file.
-export const STEP = 1 / 60;
+// Sunset Harbor — tuning constants and world layout.
+// Every number here is original to this build: the city is 3400 x 2600 world units,
+// laid out on a street grid with a beach on the east edge and a harbor along the south.
+export const WORLD = { width: 3400, height: 2600 };
 
-export const WORLD_W = 3400;
-export const WORLD_H = 2600;
-export const ROAD_W = 72;
-export const SIDEWALK = 46;
+export const VIEW = { width: 1280, height: 720 };
 
-// Centre lines of the city's roads. The grid makes a real street network
-// that traffic, police and the minimap all share.
-export const ROAD_X = [280, 680, 1080, 1480, 1880, 2280, 2680, 3060];
-export const ROAD_Y = [240, 560, 880, 1200, 1520, 1840, 2160];
+// Street grid: vertical and horizontal road centrelines. Road width 64, so blocks
+// between roads are wide enough for buildings, parks and plazas.
+export const ROADS_X = [200, 560, 920, 1280, 1640, 2000, 2360, 2720, 3080];
+export const ROADS_Y = [200, 520, 840, 1160, 1480, 1800, 2120, 2400];
+export const ROAD_HALF = 32;
+export const LANE = 14;
 
-// Water: the beach runs along the south edge, the harbor along the east.
-export const BEACH_TOP = 2290;
-export const WATER_TOP = 2450;
-export const HARBOR_LEFT = 3200;
+// The beach strip (east) and the harbor water (south) frame the city.
+export const BEACH_X = 3160;
+export const HARBOR_Y = 2460;
 
-// Named districts, shown on the minimap and in mission text.
+// Six named districts, each a rectangle with its own flavour and palette hint.
 export const DISTRICTS = [
-  { name: 'Uptown', x: 120, y: 80, w: 1500, h: 420, color: '#8a6fb8' },
-  { name: 'Old Town', x: 120, y: 560, w: 760, h: 620, color: '#b8863f' },
-  { name: 'Downtown', x: 1080, y: 560, w: 1200, h: 1000, color: '#4f7fb8' },
-  { name: 'Marina', x: 2400, y: 560, w: 760, h: 1000, color: '#3f9fb0' },
-  { name: 'The Docks', x: 3060, y: 560, w: 260, h: 1600, color: '#7a6a55' },
-  { name: 'Beachside', x: 120, y: 1840, w: 2940, h: 420, color: '#c9a35f' },
+  { name: 'Old Town', x: 0, y: 0, w: 1100, h: 900, tint: '#e8c98a' },
+  { name: 'Marina Bay', x: 1100, y: 0, w: 1100, h: 900, tint: '#9fc8d8' },
+  { name: 'Palm Heights', x: 2200, y: 0, w: 1200, h: 900, tint: '#d8b48a' },
+  { name: 'Dockside', x: 0, y: 900, w: 1100, h: 900, tint: '#b8a898' },
+  { name: 'Downtown', x: 1100, y: 900, w: 1100, h: 900, tint: '#c8b8d8' },
+  { name: 'Sunset Strip', x: 2200, y: 900, w: 1200, h: 900, tint: '#e8a878' },
+  { name: 'Harborfront', x: 0, y: 1800, w: 3400, h: 800, tint: '#a8c0c8' },
 ];
-
-// Palette: a sun-soaked coastal city at golden hour.
-export const COLORS = {
-  grass: '#7fae62',
-  grassDark: '#6f9c54',
-  park: '#5d9b4a',
-  road: '#3c3f46',
-  roadEdge: '#2e3036',
-  lane: '#e8d98a',
-  sidewalk: '#9aa0a8',
-  sand: '#e8d29a',
-  water: '#2f7fb8',
-  waterDeep: '#256a9e',
-  buildingRoof: ['#b0563f', '#7a6a8a', '#4f7a8a', '#8a6a4f', '#5f8a5f', '#96604a'],
-  buildingWall: ['#c98a6a', '#a89ab8', '#7fa8b8', '#c9a878', '#8ab88a', '#b87a6a'],
-  tree: '#3f7a35',
-  treeLight: '#5a9a45',
-};
-
-// Car types: each drives differently, so stealing a sports car matters.
-export const CAR_TYPES = {
-  sedan: { name: 'Harbor Sedan', topSpeed: 430, accel: 300, brake: 520, steer: 2.6, grip: 8.0, color: '#4f7fb8', length: 46, width: 22 },
-  sports: { name: 'Vortex GT', topSpeed: 580, accel: 420, brake: 620, steer: 3.1, grip: 9.5, color: '#c23b3b', length: 46, width: 21 },
-  taxi: { name: 'City Cab', topSpeed: 450, accel: 310, brake: 540, steer: 2.7, grip: 8.2, color: '#e8b73a', length: 46, width: 22 },
-  truck: { name: 'Flatbed Truck', topSpeed: 340, accel: 220, brake: 420, steer: 2.0, grip: 7.0, color: '#7a7f85', length: 58, width: 26 },
-  van: { name: 'Delivery Van', topSpeed: 380, accel: 250, brake: 460, steer: 2.2, grip: 7.4, color: '#8a9a7a', length: 52, width: 24 },
-  police: { name: 'Interceptor', topSpeed: 540, accel: 400, brake: 640, steer: 3.0, grip: 9.2, color: '#2a2f38', length: 48, width: 22 },
-};
-
-export const TRAFFIC_COLORS = ['#b0563f', '#4f7fb8', '#8a9a7a', '#c9a878', '#7a6a8a', '#5f8a5f', '#d8d8d8', '#3f3f46'];
 
 // Player tuning.
 export const PLAYER = {
   walkSpeed: 210,
   sprintSpeed: 330,
-  radius: 13,
+  radius: 14,
   maxHealth: 100,
   punchDamage: 18,
-  punchRange: 34,
+  punchRange: 42,
   punchArc: 1.1,
   pistolDamage: 34,
-  pistolAmmo: 12,
-  pistolReserve: 48,
+  magazine: 12,
+  reloadSeconds: 1.1,
   bulletSpeed: 900,
-  bulletRange: 620,
 };
 
-// Wanted level rules.
+// Car types: name, top speed, acceleration, steering, body colour set, toughness.
+export const CAR_TYPES = {
+  sedan:   { name: 'Sedan',    topSpeed: 430, accel: 300, steer: 2.6, grip: 3.2, health: 120, w: 46, l: 84 },
+  coupe:   { name: 'Coupe',    topSpeed: 540, accel: 380, steer: 3.1, grip: 3.6, health: 100, w: 44, l: 80 },
+  taxi:    { name: 'Taxi',     topSpeed: 450, accel: 320, steer: 2.7, grip: 3.3, health: 130, w: 46, l: 84 },
+  truck:   { name: 'Truck',    topSpeed: 360, accel: 230, steer: 2.1, grip: 2.6, health: 200, w: 52, l: 104 },
+  van:     { name: 'Van',      topSpeed: 390, accel: 250, steer: 2.2, grip: 2.8, health: 170, w: 50, l: 96 },
+  police:  { name: 'Patrol',   topSpeed: 500, accel: 360, steer: 3.0, grip: 3.5, health: 160, w: 46, l: 84 },
+  muscle:  { name: 'Muscle',   topSpeed: 580, accel: 420, steer: 2.9, grip: 3.1, health: 110, w: 48, l: 86 },
+};
+export const CAR_TYPE_KEYS = Object.keys(CAR_TYPES);
+
+// Wanted level: how many police units respond and how fast heat decays.
 export const WANTED = {
   max: 5,
-  decayDelay: 6, // seconds with no crime and no police nearby before it drops
-  decayInterval: 4, // seconds per star lost while hidden
-  steal: 1,
+  decayPerSecond: 0.045,
+  hideBonus: 0.06, // extra decay while no cop can see the player
+  stealOccupied: 1,
   assault: 1,
-  shoot: 2,
-  kill: 2,
-  speedingNearCop: 1,
+  shooting: 1,
+  speedingNearCop: 0.4,
+  kill: 1,
 };
 
-// Police response by wanted level.
-export const POLICE = {
-  footCops: [0, 2, 3, 4, 6, 8],
-  cars: [0, 0, 1, 2, 3, 4],
-  arrestTime: 1.4,
-  sightRange: 720,
-};
-
-// Scoring and saving.
-export const SAVE_KEY = 'sunset-harbor-save-v1';
-export const START_CASH = 120;
-
-// Mission rewards (cash) in story order.
+// Mission rewards and the fixer who hires the player.
+export const FIXER_NAME = 'Marla';
+export const DRIVER_NAME = 'Rook';
 export const MISSION_REWARDS = [150, 250, 400, 600, 1000];
 
-export const VIEW_W = 1280;
-export const VIEW_H = 720;
+// Save key and screenshot staging.
+export const SAVE_KEY = 'sunset-harbor-save-v1';
+export const SHOT_SEED_DEFAULT = 7;
+
+// Golden-hour palette.
+export const PALETTE = {
+  sky: '#f7b267',
+  grass: '#7fae62',
+  sand: '#e8d39a',
+  water: '#3f7d9e',
+  road: '#3c3a44',
+  roadEdge: '#2a2830',
+  sidewalk: '#9a938a',
+  buildingRoof: '#8a6f5c',
+  buildingRoof2: '#6f7f8a',
+  buildingRoof3: '#a8845c',
+  park: '#6da85e',
+  hud: '#f5e9d0',
+};
